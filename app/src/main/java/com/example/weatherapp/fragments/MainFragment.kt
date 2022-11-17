@@ -1,6 +1,7 @@
 package com.example.weatherapp.fragments
 
 import adapters.VpAdapter
+import adapters.WeatherModel
 import android.Manifest
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,8 @@ import com.android.volley.toolbox.Volley
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import org.json.JSONObject
+
 const val apiKey = "d1f03197da864cd095c85457221711"
 
 class MainFragment : Fragment() {
@@ -48,30 +51,31 @@ class MainFragment : Fragment() {
         requestWeatherData("Krasnodar")
     }
 
-    private fun init() = with(binding){
+    private fun init() = with(binding) {
         val adapter = VpAdapter(activity as FragmentActivity, fList)
         vp.adapter = adapter
-        TabLayoutMediator(tabLayout, vp){
-            tab, pos -> tab.text = tList[pos]
+        TabLayoutMediator(tabLayout, vp) { tab, pos ->
+            tab.text = tList[pos]
         }.attach()
     }
 
-    private fun permissionListener(){
+    private fun permissionListener() {
         pLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()){
-            Toast.makeText(activity,"Permission is $it", Toast.LENGTH_LONG).show()
+            ActivityResultContracts.RequestPermission()
+        ) {
+            Toast.makeText(activity, "Permission is $it", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun checkPermission(){
-        if(!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)){
+    private fun checkPermission() {
+        if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             permissionListener()
             pLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             // ToDo: если пользователь не дал разрешение, уведомить его об этом и о последствиях
         }
     }
 
-    private fun requestWeatherData(city: String){
+    private fun requestWeatherData(city: String) {
 
         val url = "https://api.weatherapi.com/v1/forecast.json?key=" +
                 apiKey +
@@ -84,14 +88,34 @@ class MainFragment : Fragment() {
         val request = StringRequest(
             Request.Method.GET,
             url,
-            {
-                result -> Log.d("MyLog", "Result: $result")
+            { result -> parseWeatherData(result)
             },
-            {
-                error -> Log.d("MyLog", "Error: $error")
+            { error ->
+                Log.d("MyLog", "Error: $error")
             }
         )
         queue.add(request)
+    }
+
+    private fun parseWeatherData(result: String) {
+        val mainObject = JSONObject(result)
+        val item = WeatherModel(
+            mainObject.getJSONObject("location").getString("name"),
+            mainObject.getJSONObject("current").getString("last_updated"),
+            mainObject.getJSONObject("current")
+                .getJSONObject("condition").getString("text"),
+            mainObject.getJSONObject("current").getString("temp_c"),
+            "",
+            "",
+            mainObject.getJSONObject("current")
+                .getJSONObject("condition").getString("icon"),
+            ""
+        )
+        Log.d("MyLog", "City: ${item.city}")
+        Log.d("MyLog", "Time: ${item.time}")
+        Log.d("MyLog", "Condition: ${item.condition}")
+        Log.d("MyLog", "CurrentTemp: ${item.currentTemp}")
+        Log.d("MyLog", "ImageUrl: ${item.imageUrl}")
     }
 
     companion object {
