@@ -21,22 +21,18 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import com.android.volley.Request
-import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.weatherapp.DialogManager
 import com.example.weatherapp.MainViewModel
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
-import java.util.jar.Attributes.Name
 
 const val apiKey = "d1f03197da864cd095c85457221711"
 
@@ -197,7 +193,7 @@ class MainFragment : Fragment() {
         val daysArray = mainObject.getJSONObject("forecast")
             .getJSONArray("forecastday")
         val city = mainObject.getJSONObject("location").getString("name")
-        for (i in 0 until daysArray.length()){ // Todo: -1
+        for (i in 0 until daysArray.length()){
             val day = daysArray[i] as JSONObject
             val item = WeatherModel(
                 city,
