@@ -99,23 +99,56 @@ class MainFragment : Fragment() {
 
     private fun parseWeatherData(result: String) {
         val mainObject = JSONObject(result)
+        val list = parseDays(mainObject)
+        parseCurrentData(mainObject, list[0])
+    }
+
+    private fun parseDays(mainObject: JSONObject) : List<WeatherModel>{
+        val list = ArrayList<WeatherModel>()
+        val daysArray = mainObject.getJSONObject("forecast")
+            .getJSONArray("forecastday")
+        val city = mainObject.getJSONObject("location").getString("name")
+        for (i in 0 until daysArray.length()){ // Todo: -1
+            val day = daysArray[i] as JSONObject
+            val item = WeatherModel(
+                city,
+                day.getString("date"),
+                day.getJSONObject("day")
+                    .getJSONObject("condition").getString("text"),
+                "",
+                day.getJSONObject("day").getString("maxtemp_c"),
+                day.getJSONObject("day").getString("mintemp_c"),
+                day.getJSONObject("day").getJSONObject("condition")
+                    .getString("icon"),
+                day.getJSONArray("hour").toString()
+            )
+            list.add(item)
+        }
+        return list
+    }
+
+    private fun parseCurrentData(mainObject: JSONObject, weatherItem: WeatherModel){
         val item = WeatherModel(
             mainObject.getJSONObject("location").getString("name"),
             mainObject.getJSONObject("current").getString("last_updated"),
             mainObject.getJSONObject("current")
                 .getJSONObject("condition").getString("text"),
             mainObject.getJSONObject("current").getString("temp_c"),
-            "",
-            "",
+            weatherItem.maxTemp,
+            weatherItem.minTemp,
             mainObject.getJSONObject("current")
                 .getJSONObject("condition").getString("icon"),
-            ""
+            weatherItem.hours
         )
         Log.d("MyLog", "City: ${item.city}")
         Log.d("MyLog", "Time: ${item.time}")
         Log.d("MyLog", "Condition: ${item.condition}")
         Log.d("MyLog", "CurrentTemp: ${item.currentTemp}")
         Log.d("MyLog", "ImageUrl: ${item.imageUrl}")
+        Log.d("MyLog", "-----")
+        Log.d("MyLog", "MaxTemp: ${item.maxTemp}")
+        Log.d("MyLog", "MinTemp: ${item.minTemp}")
+        Log.d("MyLog", "Hours: ${item.hours}")
     }
 
     companion object {
