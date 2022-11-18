@@ -33,8 +33,8 @@ class MainFragment : Fragment() {
         DaysFragment.newInstance()
     )
     private val tList = listOf( //ToDo: Можно взять из String.xml для перевода
-        "По часам",
-        "По дням"
+        "Сегодня",
+        "На неделю"
     )
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var binding: FragmentMainBinding
@@ -141,6 +141,7 @@ class MainFragment : Fragment() {
             )
             list.add(item)
         }
+        model.liveDataList.value = list
         return list
     }
 
