@@ -2,8 +2,6 @@ package com.example.weatherapp
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.widget.EditText
 
 object DialogManager {
@@ -34,7 +32,6 @@ object DialogManager {
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE,"Нет"){_,_->
             dialog.dismiss()
         }
-        //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
     }
     interface Listener{
