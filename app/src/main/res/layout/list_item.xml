@@ -19,8 +19,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-smallcaps"
+            android:fontFamily="sans-serif-medium"
             android:text="Lunes 17/11/2022"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +35,7 @@
             android:fontFamily="serif"
             android:text="Солнечно"
             android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tvDate"
             app:layout_constraintTop_toBottomOf="@+id/tvDate" />
@@ -50,11 +53,12 @@
             android:id="@+id/tvTemp"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="50dp"
             android:fontFamily="serif"
             android:gravity="center"
             android:text="25 C"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/im"
             app:layout_constraintStart_toEndOf="@+id/tvDate"
