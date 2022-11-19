@@ -236,7 +236,7 @@ class MainFragment : Fragment() {
         Log.d("MyLog", "Condition: ${item.condition}")
         Log.d("MyLog", "CurrentTemp: ${item.currentTemp}")
         Log.d("MyLog", "ImageUrl: ${item.imageUrl}")
-        Log.d("MyLog", "-----")
+        Log.d("MyLog", "-------")
         Log.d("MyLog", "MaxTemp: ${item.maxTemp}")
         Log.d("MyLog", "MinTemp: ${item.minTemp}")
         Log.d("MyLog", "Hours: ${item.hours}")
