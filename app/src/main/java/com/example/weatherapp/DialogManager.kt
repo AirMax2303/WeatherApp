@@ -20,7 +20,7 @@ object DialogManager {
         dialog.show()
     }
     fun searchByNameDialog(context: Context, listener: Listener){
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
         val edName = EditText(context)
         builder.setView(edName)
         val dialog = builder.create()
