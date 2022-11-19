@@ -1,5 +1,6 @@
 package adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ListItemBinding
 import com.squareup.picasso.Picasso
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class WeatherAdapter(val listener: Listener?) : ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparator()) {
 
@@ -21,12 +24,16 @@ class WeatherAdapter(val listener: Listener?) : ListAdapter<WeatherModel, Weathe
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: WeatherModel) = with(binding){
             itemTemp = item
             if (item.time.length > 10)
               tvDate.text = item.time.substring(11,16)
             else
-              tvDate.text = item.time
+              tvDate.text = item.time.substring(8,10) + '.' +
+                      item.time.substring(5,7) + '.' +
+                      item.time.substring(0, 4)
+
 //            tvCondition.text = item.condition
             tvCondition.text = String(item.condition.toByteArray(Charsets.ISO_8859_1))
             tvTemp.text = item.currentTemp.ifEmpty {"От ${item.maxTemp}°C до ${item.minTemp}°C"}
@@ -42,7 +49,6 @@ class WeatherAdapter(val listener: Listener?) : ListAdapter<WeatherModel, Weathe
         override fun areContentsTheSame(oldItem: WeatherModel, newItem: WeatherModel): Boolean {
             return oldItem == newItem
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
