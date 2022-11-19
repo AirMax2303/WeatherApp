@@ -3,6 +3,7 @@ package com.example.weatherapp.fragments
 import adapters.VpAdapter
 import adapters.WeatherModel
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -136,12 +137,16 @@ class MainFragment : Fragment() {
             }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateCurrentCard()= with(binding){
         model.liveDataCurrent.observe(viewLifecycleOwner){
             val tempMaxMin = "${it.maxTemp}°C ~ ${it.minTemp}°C"
             tvData.text = it.time
             tvCity.text = it.city
-            tvCurrentTemp.text = it.currentTemp.ifEmpty { tempMaxMin }
+            if (it.currentTemp.isEmpty())
+                tvCurrentTemp.text = tempMaxMin
+            else
+                tvCurrentTemp.text = "${it.currentTemp} °C"
             tvCondition.text = String(it.condition.toByteArray(Charsets.ISO_8859_1))
             tvMaxMin.text = if(it.currentTemp.isEmpty()) "" else tempMaxMin
             Picasso.get().load("https:" + it.imageUrl).into(imWeather)
