@@ -22,7 +22,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="Lunes 17/11/2022"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
