@@ -1,5 +1,7 @@
 package com.example.weatherapp
 
+import okio.Utf8
+
 data class DayItem(
     val city: String,
     val time: String,
