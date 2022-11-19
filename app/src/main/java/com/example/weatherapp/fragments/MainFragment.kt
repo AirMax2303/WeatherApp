@@ -32,9 +32,13 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
+import okio.Utf8
 import org.json.JSONObject
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder
 
 const val apiKey = "d1f03197da864cd095c85457221711"
+const val apiKeyYandex = "aa5abd0a-9c35-44af-8bbe-ffd06bc8072b"
 
 class MainFragment : Fragment() {
     private lateinit var fLocationClient: FusedLocationProviderClient
@@ -138,7 +142,7 @@ class MainFragment : Fragment() {
             tvData.text = it.time
             tvCity.text = it.city
             tvCurrentTemp.text = it.currentTemp.ifEmpty { tempMaxMin }
-            tvCondition.text = it.condition
+            tvCondition.text = String(it.condition.toByteArray(Charsets.ISO_8859_1))
             tvMaxMin.text = if(it.currentTemp.isEmpty()) "" else tempMaxMin
             Picasso.get().load("https:" + it.imageUrl).into(imWeather)
         }
@@ -168,6 +172,7 @@ class MainFragment : Fragment() {
                 city +
                 "&days=" +
                 "7" +
+                "&lang=ru" +
                 "&aqi=no&alerts=no"
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
@@ -214,6 +219,8 @@ class MainFragment : Fragment() {
     }
 
     private fun parseCurrentData(mainObject: JSONObject, weatherItem: WeatherModel){
+
+
         val item = WeatherModel(
             mainObject.getJSONObject("location").getString("name"),
             mainObject.getJSONObject("current").getString("last_updated"),
@@ -226,6 +233,7 @@ class MainFragment : Fragment() {
                 .getJSONObject("condition").getString("icon"),
             weatherItem.hours
         )
+
         model.liveDataCurrent.value = item
         Log.d("MyLog", "City: ${item.city}")
         Log.d("MyLog", "Time: ${item.time}")
@@ -236,6 +244,8 @@ class MainFragment : Fragment() {
         Log.d("MyLog", "MaxTemp: ${item.maxTemp}")
         Log.d("MyLog", "MinTemp: ${item.minTemp}")
         Log.d("MyLog", "Hours: ${item.hours}")
+
+        Log.d("MyLog", "Condition: ${String(item.condition.toByteArray(Charsets.ISO_8859_1))}")
     }
 
     companion object {

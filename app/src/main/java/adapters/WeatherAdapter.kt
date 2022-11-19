@@ -24,7 +24,8 @@ class WeatherAdapter(val listener: Listener?) : ListAdapter<WeatherModel, Weathe
         fun bind(item: WeatherModel) = with(binding){
             itemTemp = item
             tvDate.text = item.time
-            tvCondition.text = item.condition
+//            tvCondition.text = item.condition
+            tvCondition.text = String(item.condition.toByteArray(Charsets.ISO_8859_1))
             tvTemp.text = item.currentTemp.ifEmpty {"От ${item.maxTemp}°C до ${item.minTemp}°C"}
             Picasso.get().load("https:" + item.imageUrl).into(im)
         }
