@@ -1,5 +1,5 @@
 # WeatherApp
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/b6a934bd09a5c276957f/maintainability)](https://codeclimate.com/github/AirMax2303/WeatherApp/maintainability)
 1. Отображение прогноза погоды за текущий день
 
 2. Отображение прогноза погоды за неделю
